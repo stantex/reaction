@@ -1,19 +1,14 @@
 import cors from "cors";
 import express from "express";
-import { makeExecutableSchema, mergeSchemas } from "apollo-server";
+import { mergeSchemas, gql } from "apollo-server";
 import { ApolloServer } from "apollo-server-express";
+import { buildFederatedSchema } from "@apollo/federation";
 import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
 
 const DEFAULT_GRAPHQL_PATH = "/graphql-beta";
-
-const resolverValidationOptions = {
-  // After we fix all errors that this prints, we should probably go
-  // back to `true` (the default)
-  requireResolversForResolveType: false
-};
 
 /**
  * @name createApolloServer
@@ -36,7 +31,8 @@ export default function createApolloServer(options = {}) {
   // Create a custom Express server so that we can add our own middleware and HTTP routes
   const app = express();
 
-  let schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
+
+  let schema = buildFederatedSchema([{ typeDefs: gql`${typeDefs}`, resolvers }]);
   if (schemasToMerge.length) {
     schema = mergeSchemas({ schemas: [schema, ...schemasToMerge] });
   }

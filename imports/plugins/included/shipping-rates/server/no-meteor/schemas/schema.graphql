@@ -22,7 +22,7 @@ type FlatRateFulfillmentMethod implements Node {
   cost: Float
 
   """
-  The fulfillment types for which this method may be used. For example, "shipping" or "digital".
+  The fulfillment types for which this method may be used. For example, 'shipping' or 'digital'
   """
   fulfillmentTypes: [FulfillmentType]!
 
@@ -55,7 +55,7 @@ input FlatRateFulfillmentMethodInput {
   cost: Float
 
   """
-  The fulfillment types for which this method may be used. For example, "shipping" or "digital".
+  The fulfillment types for which this method may be used. For example, 'shipping' or 'digital'
   """
   fulfillmentTypes: [FulfillmentType]!
 

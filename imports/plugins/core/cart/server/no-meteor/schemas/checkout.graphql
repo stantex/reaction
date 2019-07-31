@@ -52,7 +52,7 @@ type FulfillmentGroup implements Node {
   shop: Shop!
 
   """
-  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: 'shipping', 'digital'
   """
   type: FulfillmentType!
 }

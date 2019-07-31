@@ -269,7 +269,7 @@ type OrderItem implements Node {
 }
 
 """
-Extra data for an order fulfillment group with type "shipping"
+Extra data for an order fulfillment group with type 'shipping'
 """
 type ShippingOrderFulfillmentGroupData {
   "The address to ship to"
@@ -315,7 +315,7 @@ type OrderFulfillmentGroup implements Node {
   trackingUrl: String
 
   """
-  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: 'shipping', 'digital'
   """
   type: FulfillmentType!
 }
@@ -437,7 +437,7 @@ input OrderFulfillmentGroupInput {
   totalPrice: Float
 
   """
-  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: 'shipping', 'digital'
   """
   type: FulfillmentType!
 }
@@ -465,7 +465,7 @@ input OrderFulfillmentGroupExistingOrderInput {
   totalPrice: Float
 
   """
-  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: 'shipping', 'digital'
   """
   type: FulfillmentType!
 }

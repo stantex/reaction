@@ -29,7 +29,7 @@ type StorefrontUrls {
 }
 
 "Represents a Reaction shop"
-type Shop implements Node {
+type Shop implements Node  @key(fields: "_id") {
   "The shop ID"
   _id: ID!
 
@@ -95,3 +95,5 @@ extend type Query {
   "Returns a shop by slug"
   shopBySlug(slug: String!): Shop
 }
+
+

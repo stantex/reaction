@@ -190,7 +190,7 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   _id: ID!
 
   """
-  The attribute label describes the category of variant, for example, "Color" or "Size".
+  The attribute label describes the category of variant, for example, 'Color' or 'Size'.
   In most cases this will be the same for all variants at the same level.
   """
   attributeLabel: String!

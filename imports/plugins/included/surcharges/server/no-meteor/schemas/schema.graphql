@@ -51,7 +51,7 @@ type Surcharge implements Node {
   shopId: ID!
 
   """
-  The type of this surcharge. Allowed types "surcharge".
+  The type of this surcharge. Allowed types 'surcharge'.
   """
   type: SurchargeTypeEnum!
 }
@@ -253,7 +253,7 @@ input SurchargeInput {
   methodIds: [ID]
 
   """
-  The type of this surcharge. Allowed types are "surcharge".
+  The type of this surcharge. Allowed types are 'surcharge'.
   """
   type: SurchargeTypeEnum!
 }
