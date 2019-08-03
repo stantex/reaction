@@ -1,11 +1,30 @@
-const MIGRATIONS_COLLECTION_NAME = "migrations";
+const DEFAULT_MIGRATIONS_COLLECTION_NAME = "migrations";
 
-export default function doesDatabaseVersionMatch({
+/**
+ * @summary Determines whether the version in the database for `namespace` is
+ *   the expected one.
+ * @param {Object} input Input object
+ * @param {Db} db Mongo library Db instance, connected
+ * @param {String|Number} expectedVersion Expected version. A number will be coerced into a string.
+ * @param {String} [migrationsCollectionName] If you use a non-default migrations collection name,
+ *   pass it here. Otherwise "migrations" will be used.
+ * @param {String} namespace Migration namespace to check
+ * @return {Boolean} True if they match exactly.
+ */
+export default async function doesDatabaseVersionMatch({
   db,
   expectedVersion,
+  migrationsCollectionName = DEFAULT_MIGRATIONS_COLLECTION_NAME,
   namespace
 }) {
-  const doc = await db.collection(MIGRATIONS_COLLECTION_NAME).findOne({ namespace });
-  const currentVersion = doc ? doc.version : "1";
-  return currentVersion !== String(expectedVersion);
+  const doc = await db.collection(migrationsCollectionName).findOne({
+    namespace
+  }, {
+    projection: {
+      version: 1
+    }
+  });
+
+  const currentVersion = (doc && doc.version) || "1";
+  return String(currentVersion) === String(expectedVersion);
 }
