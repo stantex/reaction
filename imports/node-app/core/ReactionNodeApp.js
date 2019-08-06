@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import { PubSub } from "apollo-server";
-import { merge } from "lodash";
+import { flatten, merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
 import Logger from "@reactioncommerce/logger";
 import appEvents from "./util/appEvents";
@@ -182,6 +182,22 @@ export default class ReactionNodeApp {
       packageInfoArray.forEach(registerPluginHandlerFunc);
     });
 
+    const preStartupCheckFunctionsRegisteredByPlugins = this.functionsByType.preStartupCheck;
+    if (Array.isArray(preStartupCheckFunctionsRegisteredByPlugins)) {
+      // OK to run these in parallel
+      const preStartupPromises = preStartupCheckFunctionsRegisteredByPlugins
+        .map((checkFunctionInfo) => checkFunctionInfo.func(this.context));
+
+      const results = await Promise.all(preStartupPromises);
+      const allMessages = flatten(results);
+      if (allMessages.length) {
+        allMessages.forEach((msg) => {
+          Logger.error(msg);
+        });
+        return false;
+      }
+    }
+
     const startupFunctionsRegisteredByPlugins = this.functionsByType.startup;
     if (Array.isArray(startupFunctionsRegisteredByPlugins)) {
       // We are intentionally running these in series, in the order in which they were registered
@@ -193,6 +209,8 @@ export default class ReactionNodeApp {
         Logger.info(`Startup function "${startupFunctionInfo.func.name}" for plugin "${startupFunctionInfo.pluginName}" finished in ${elapsedMs}ms`);
       }
     }
+
+    return true;
   }
 
   /**

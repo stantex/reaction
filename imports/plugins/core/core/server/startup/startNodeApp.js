@@ -49,29 +49,45 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
     mongodb
   });
 
+  // Wait for all plugins to register themselves
   if (onAppInstanceCreated) await onAppInstanceCreated(app);
 
+  // Create the Apollo Server and Express instances
   app.initServer();
 
+  // Inject the `Db` instance that Meteor has already created and connected
   const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
   app.setMongoDatabase(db);
 
   // Set the base context used by getGraphQLContextInMeteorMethod, which ideally should be identical
-  // to the one in GraphQL
+  // to the one in GraphQL. Temporary during the Meteor transition.
+  // Remove this after nothing uses `getGraphQLContextInMeteorMethod`.
   setBaseContext(app.context);
 
+  // Run "registerPluginHandler", "preStartupCheck", and "startup" type functions
+  let startupWasSuccessful;
   try {
-    await app.runServiceStartup();
+    startupWasSuccessful = await app.runServiceStartup();
   } catch (error) {
     Logger.error(error, "Error running plugin startup");
-    throw error;
+    startupWasSuccessful = false;
   }
 
+  // Set rawCollections. Temporary during the Meteor transition.
+  // Remove this after nothing uses rawCollections.
+  // Keep this after startup code in case additional collections
+  // are being defined on startup.
   setCollections(app.context.collections);
 
-  meteorFileCollectionStartup(app.context);
+  // Working on moving this into standard startup function pattern,
+  // but currently there are a couple Meteor dependencies.
+  if (startupWasSuccessful) {
+    meteorFileCollectionStartup(app.context);
+  }
 
-  // bind the specified paths to the Express server running GraphQL
+  // Bind the specified paths to the Express server running GraphQL.
+  // This is where we merge the Express server created by Apollo
+  // into the one Meteor has already created.
   WebApp.connectHandlers.use(app.expressApp);
 
   // Generate upgrade handler which supports both Meteor socket and graphql.

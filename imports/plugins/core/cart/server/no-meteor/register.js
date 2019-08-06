@@ -1,5 +1,6 @@
 import mutations from "./mutations";
 import queries from "./queries";
+import preStartupCheck from "./preStartupCheck";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
@@ -42,6 +43,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
+      preStartupCheck: [preStartupCheck],
       startup: [startup]
     },
     graphQL: {

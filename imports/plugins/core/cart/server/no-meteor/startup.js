@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import doesDatabaseVersionMatch from "/imports/util/doesDatabaseVersionMatch";
 import updateCartItemsForVariantPriceChange from "./util/updateCartItemsForVariantPriceChange";
 
 const AFTER_CATALOG_UPDATE_EMITTED_BY_NAME = "CART_CORE_PLUGIN_AFTER_CATALOG_UPDATE";
@@ -82,17 +81,8 @@ async function updateAllCartsForVariant({ Cart, context, variant }) {
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents, collections, db } = context;
+  const { appEvents, collections } = context;
   const { Cart } = collections;
-
-  if (!doesDatabaseVersionMatch({
-    db,
-    expectedVersion: 2,
-    namespace: "reaction-plugin-cart"
-  })) {
-    Logger.warn("DATABASE VERSION FOR CART DOES NOT MATCH!!");
-    return;
-  }
 
   // When an order is created, delete the source cart
   appEvents.on("afterOrderCreate", async ({ order }) => {
