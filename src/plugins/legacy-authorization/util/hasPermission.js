@@ -13,7 +13,7 @@ const GLOBAL_GROUP = "__global_roles__";
  * @param {Object} context App context
  * @param {Object} resource - resource user is trying to access
  * @param {Object} action - action user is trying to perform to be passed to in the GQL query
- * @param {Object} authContext - context data to verify permissions against
+ * @param {Object} [authContext] - context data to verify permissions against
  * @param {String} [authContext.owner] - The owner of the resource requested
  * @param {String} [authContext.shopId] - The shop ID for which the permissions are needed. If not set,
  *   only global permissions will be checked.
@@ -28,13 +28,13 @@ export default async function hasPermission(context, resource, action, authConte
 
   if (!action) throw new ReactionError("invalid-param", "Action must be provided");
 
-  if (!authContext) throw new ReactionError("invalid-param", "authContext must be provided");
+  const { owner: resourceOwner, shopId } = authContext || {};
 
   // If the current user is the owner of a resource we are trying to check,
   // such as an order or data on a user profile, they are authorized to perform the action
-  if (authContext && authContext.owner && authContext.owner === context.userId) return true;
+  if (resourceOwner && resourceOwner === context.userId) return true;
+
   // Parse the provided data to create the permission name to check against (<organization>:<system>:<entity>/<action>)
-  const { shopId } = authContext;
   const permissionName = `${resource.split(":").splice(0, 3).join(":")}/${action}`;
 
   // make sure shopId is a non-empty string (if provided)
@@ -42,9 +42,8 @@ export default async function hasPermission(context, resource, action, authConte
     throw new ReactionError("invalid-param", "shopId must be a non-empty string");
   }
 
-  // "owners" should always have access
-  // we create an array with the provided permission, plus owner
-  const checkPermissions = [permissionName, "owner", "reaction:legacy:shops/owner"]; // TODO(pod-auth): is this the best way to deal with an owner account? do we still have owners?
+  // we create an array with the provided permission
+  const checkPermissions = [permissionName];
 
   // always check GLOBAL_GROUP
   const globalPermissions = userPermissions[GLOBAL_GROUP];
@@ -60,7 +59,7 @@ export default async function hasPermission(context, resource, action, authConte
   return false;
 }
 
-const hasPermissionCurried = curryN(4, hasPermission);
+const hasPermissionCurried = curryN(3, hasPermission);
 
 /**
  * @summary Get a `hasPermission` function bound to the current user context

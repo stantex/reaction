@@ -56,7 +56,13 @@ class TestApp {
       }
     });
 
-    await this.reactionNodeApp.collections.Accounts.insertOne({ ...user, userId: user._id });
+    const createdAt = new Date();
+    await this.reactionNodeApp.collections.Accounts.insertOne({
+      ...user,
+      createdAt,
+      updatedAt: createdAt,
+      userId: user._id
+    });
   }
 
   async setLoggedInUser(user = {}) {
@@ -115,6 +121,14 @@ class TestApp {
     });
 
     const result = await this.reactionNodeApp.collections.Shops.insertOne(mockShop);
+
+    await this.context.appEvents.emit("afterShopCreate", {
+      createdBy: this.userId,
+      shop: {
+        ...mockShop,
+        _id: result.insertedId
+      }
+    });
 
     return result.insertedId;
   }
