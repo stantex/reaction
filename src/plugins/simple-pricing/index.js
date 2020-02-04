@@ -17,6 +17,9 @@ import { PriceRange } from "./simpleSchemas.js";
  * @returns {undefined}
  */
 export default async function register(app) {
+
+  console.log("REGISTERING CUSTOM PRICING PLUGIN");
+
   await app.registerPlugin({
     label: "Pricing",
     name: "reaction-pricing",
