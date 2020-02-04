@@ -11,7 +11,7 @@ export default {
   },
   bulkDiscountCalc: () => {
     return {
-      "fixed:": 12.43,
+      "fixed": 12.43,
       "variable_each": 1.32,
       "variable_72": 2.34
     }

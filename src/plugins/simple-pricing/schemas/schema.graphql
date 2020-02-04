@@ -1,6 +1,6 @@
 type BulkDiscountCalc {
   fixed: Float!
-  variable: Float!
+  variable_each: Float!
   variable_72: Float
 }
 
