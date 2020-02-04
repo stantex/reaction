@@ -47,6 +47,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input.prices - prices to update
  * @param {Object} [input.prices.compareAtPrice] - variant compareAtPrice
  * @param {Object} [input.prices.price] - variant price
+ * @param {Object} input.prices.bulkDiscountCalc - bulkDiscountCalc to update
  * @param {Object} [input.prices.bulkDiscountCalc.fixed] - fixed cost calculation
  * @param {Object} [input.prices.bulkDiscountCalc.variable_each] - variable_each cost calculation
  * @param {Object} [input.prices.bulkDiscountCalc.variable_72] - variable_72 cost calculation
@@ -59,6 +60,8 @@ export default async function updateProductVariantPrices(context, input) {
   const { appEvents, collections } = context;
   const { Products } = collections;
   const { prices, variantId, shopId } = input;
+
+  console.log("PRICES:", prices)
 
   // Check that user has permission to create product
   await context.validatePermissions(`reaction:legacy:products:${variantId}`, "update:prices", {
