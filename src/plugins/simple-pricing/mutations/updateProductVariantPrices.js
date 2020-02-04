@@ -71,9 +71,12 @@ export default async function updateProductVariantPrices(context, input) {
   const fields = Object.keys(prices);
   if (fields.length === 0) throw new ReactionError("invalid-param", "At least one field to update must be provided");
 
+  let update = { $set: { ...prices } }
+  console.log("UPDATE:", update)
+
   const { value: updatedProductVariant } = await Products.findOneAndUpdate(
     { _id: variantId, shopId, type: "variant" },
-    { $set: { ...prices } },
+    update,
     { returnOriginal: false }
   );
 
