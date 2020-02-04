@@ -10,11 +10,11 @@ export default {
     return null;
   },
   bulkDiscountCalc: (node) => {
-    // console.log("NODE:", node)
+    console.log("NODE:", node)
     return {
-      "fixed": node.bulkDiscountCalc.fixed,
-      "variable_each": node.bulkDiscountCalc.variable_each,
-      "variable_72": node.bulkDiscountCalc.variable_72
+      "fixed": node.bulkDiscountCalc && node.bulkDiscountCalc.fixed,
+      "variable_each": node.bulkDiscountCalc && node.bulkDiscountCalc.variable_each,
+      "variable_72": node.bulkDiscountCalc && node.bulkDiscountCalc.variable_72
     }
   },
   displayPrice: (node) => {
