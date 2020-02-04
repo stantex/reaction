@@ -33,6 +33,8 @@ export default async function updateProductVariantPrices(_, { input }, context) 
     prices
   });
 
+  console.log("UPDATE MUTATION 2")
+
   return {
     clientMutationId,
     variant: updatedVariant

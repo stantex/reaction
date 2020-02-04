@@ -76,6 +76,8 @@ export default async function updateProductVariantPrices(context, input) {
 
   if (!updatedProductVariant) throw new ReactionError("error-occurred", "Unable to update variant prices");
 
+  console.log("UPDATE MUTATION 1")
+
   await appEvents.emit("afterVariantUpdate", {
     fields,
     productId: updatedProductVariant.ancestors[0],
