@@ -9,7 +9,7 @@ export default {
     }
     return null;
   },
-  bulkDiscountCalc: () => {
+  bulkDiscountCalc: (node) => {
     console.log("NODE:", node)
     return {
       "fixed": node.bulkDiscountCalc.fixed,
