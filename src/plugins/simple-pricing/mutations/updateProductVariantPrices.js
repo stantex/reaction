@@ -1,6 +1,21 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 
+const bulkDiscountCalcInput = new SimpleSchema({
+  fixed: {
+    type: Number,
+    optional: true
+  },
+  variable_each: {
+    type: Number,
+    optional: true
+  },
+  variable_72: {
+    type: Number,
+    optional: true
+  }
+})
+
 const pricesInput = new SimpleSchema({
   compareAtPrice: {
     type: Number,
@@ -8,6 +23,10 @@ const pricesInput = new SimpleSchema({
   },
   price: {
     type: Number,
+    optional: true
+  },
+  bulkDiscountCalc: {
+    type: bulkDiscountCalcInput,
     optional: true
   }
 });
@@ -28,6 +47,9 @@ const inputSchema = new SimpleSchema({
  * @param {Object} input.prices - prices to update
  * @param {Object} [input.prices.compareAtPrice] - variant compareAtPrice
  * @param {Object} [input.prices.price] - variant price
+ * @param {Object} [input.prices.bulkDiscountCalc.fixed] - fixed cost calculation
+ * @param {Object} [input.prices.bulkDiscountCalc.variable_each] - variable_each cost calculation
+ * @param {Object} [input.prices.bulkDiscountCalc.variable_72] - variable_72 cost calculation
  * @param {String} input.variantId - variantId of product to update
  * @param {String} input.shopId - shopId of shop product belongs to
  * @return {Promise<Object>} updateProductVariant payload
