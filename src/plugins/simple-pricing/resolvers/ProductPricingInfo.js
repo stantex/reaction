@@ -10,7 +10,7 @@ export default {
     return null;
   },
   bulkDiscountCalc: (node) => {
-    console.log("NODE:", node)
+    // console.log("NODE:", node)
     return {
       "fixed": node.bulkDiscountCalc.fixed,
       "variable_each": node.bulkDiscountCalc.variable_each,

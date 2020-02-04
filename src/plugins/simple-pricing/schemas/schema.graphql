@@ -116,6 +116,12 @@ extend input ProductVariantInput {
   price: Float
 }
 
+input bulkDiscountCalcInput {
+  fixed: Float
+  variable_each: Float
+  variable_72: Float
+}
+
 "Input for the `updateProductVariantField` mutation"
 input UpdateProductVariantPricesInput  {
   "Prices to update"
@@ -135,6 +141,9 @@ input ProductVariantPricesInput {
 
   "Variant price"
   price: Float
+
+  "BulkDiscountCalc"
+  bulkDiscountCalc: bulkDiscountCalcInput
 }
 
 extend type Mutation {
