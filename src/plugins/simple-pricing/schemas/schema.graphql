@@ -1,3 +1,9 @@
+type BulkDiscountCalc {
+  fixed: Float!
+  variable: Float!
+  variable_72: Float
+}
+
 "The product price or price range for a specific currency"
 type ProductPricingInfo {
   """
@@ -5,6 +11,8 @@ type ProductPricingInfo {
   only purchasable variants will have a `compareAtPrice`.
   """
   compareAtPrice: Money
+
+  bulkDiscountCalc: BulkDiscountCalc
 
   "The code for the currency these pricing details applies to"
   currency: Currency!

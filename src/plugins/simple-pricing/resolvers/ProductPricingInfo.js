@@ -9,6 +9,13 @@ export default {
     }
     return null;
   },
+  bulkDiscountCalc: () => {
+    return {
+      "fixed:": 12.43,
+      "variable_each": 1.32,
+      "variable_72": 2.34
+    }
+  },
   displayPrice: (node) => {
     // if (node.displayPrice) {
     //   // Operating in core catalog plugin mode.
