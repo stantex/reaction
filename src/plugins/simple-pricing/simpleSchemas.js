@@ -67,6 +67,11 @@ export function extendSimplePricingSchemas(schemas) {
       defaultValue: 0.00,
       min: 0,
       optional: true
+    },
+    bulkDiscountCalc: {
+      type: Object,
+      blackbox: true,
+      optional: true
     }
   });
 
